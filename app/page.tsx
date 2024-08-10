@@ -1,5 +1,5 @@
 import Image from "next/image";
-import HomePage from './pages/home/page';
+import HomePage from './home/page';
 import Link from "next/link";
 
 export default function Home() {
@@ -7,6 +7,9 @@ export default function Home() {
     <main>
   <h1>Hello world!</h1>
   <Link href="/pages/home">Home Page</Link>
+  <br />
+  <Link href="/users">Users</Link>
+  
     </main>
   );
 }
