@@ -1,10 +1,23 @@
 import fetch from 'node-fetch';
 
 const url = 'https://api.apprenticeships.education.gov.uk/vacancies/vacancy?Sort=AgeDesc&FilterBySubscription=true';
-const subscriptionKey = '127f944c3bd74ac0be6c6d66a718ae8c';
 
 export async function GET(req) {
     try {
+        // Extract the subscriptionKey from query parameters or body
+        const { searchParams } = new URL(req.url);
+        let subscriptionKey = searchParams.get('subscriptionKey');
+
+        // If the key isn't in the query params, try getting it from the body
+        if (!subscriptionKey) {
+            const body = await req.json();
+            subscriptionKey = body.subscriptionKey;
+        }
+
+        if (!subscriptionKey) {
+            throw new Error('Subscription key is missing');
+        }
+
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -24,6 +37,6 @@ export async function GET(req) {
         return new Response(JSON.stringify(data), { status: 200 });
     } catch (error) {
         // Handle errors
-        return new Response(JSON.stringify({ error: 'Error fetching data' }), { status: 500 });
+        return new Response(JSON.stringify({ error: error.message || 'Error fetching data' }), { status: 500 });
     }
 }
