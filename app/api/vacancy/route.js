@@ -17,6 +17,7 @@ export async function GET(req) {
         if (!subscriptionKey) {
             throw new Error('Subscription key is missing');
         }
+        
 
         const response = await fetch(url, {
             method: 'GET',
