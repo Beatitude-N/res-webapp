@@ -1,33 +1,21 @@
 import fetch from 'node-fetch';
 
-
-
 export async function GET(req) {
     try {
-       // Extract the subscriptionKey from query parameters or body
-const { searchParams } = new URL(req.url);
-let subscriptionKey = searchParams.get('subscriptionKey');
-let referenceId = searchParams.get('referenceId');
+        // Extract the subscriptionKey and referenceId from query parameters
+        const { searchParams } = new URL(req.url);
+        let subscriptionKey = searchParams.get('subscriptionKey');
+        let referenceId = searchParams.get('referenceId');
 
-// If the key isn't in the query params, try getting it from the body
-if (!subscriptionKey || !referenceId) {
-    try {
-        if (req.method === 'POST') {
-            const body = await req.json();
-            subscriptionKey = subscriptionKey || body.subscriptionKey;
-            referenceId = referenceId || body.referenceId;
+        // Validate the required parameters
+        if (!subscriptionKey) {
+            throw new Error('Subscription key is missing');
         }
-    } catch (error) {
-        throw new Error('Failed to parse request body');
-    }
-}
 
-if (!subscriptionKey) {
-    throw new Error('Subscription key is missing');
-}
+        if (!referenceId) {
+            throw new Error('Reference ID is missing');
+        }
 
-        
-        // const referenceId = ``;
         const url = `https://api.apprenticeships.education.gov.uk/vacancies/vacancy${referenceId}`;
 
         const response = await fetch(url, {
