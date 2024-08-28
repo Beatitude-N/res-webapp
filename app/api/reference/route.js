@@ -16,7 +16,7 @@ export async function GET(req) {
             throw new Error('Reference ID is missing');
         }
 
-        const url = `https://api.apprenticeships.education.gov.uk/vacancies/vacancy${referenceId}`;
+        const url = `https://api.apprenticeships.education.gov.uk/vacancies/vacancy/${referenceId}`;
 
         const response = await fetch(url, {
             method: 'GET',
